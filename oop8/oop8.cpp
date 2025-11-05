@@ -1,9 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <functional>
+#include <numeric>
 #include <cstdlib>
 #include <ctime>
+#include <functional>
 
 using namespace std;
 
@@ -21,32 +22,24 @@ int main() {
     for (int x : v) cout << x << " ";
     cout << "\n";
 
-    int sum_neg = 0;
-    for (int x : v) {
-        if (x < 0)
-            sum_neg += x;
-    }
-    cout << "\nSum of negative elements: " << sum_neg << endl;
+    int sum = accumulate(v.begin(), v.end(), 0);
+    cout << "\nSum of elements: " << sum << endl;
 
     auto it_min = min_element(v.begin(), v.end());
     auto it_max = max_element(v.begin(), v.end());
 
     if (it_min > it_max) swap(it_min, it_max);
 
-    int product = 1;
+    long long product = 1;
     if (distance(it_min, it_max) > 1) {
-        for (auto it = next(it_min); it != it_max; ++it)
-            product *= *it;
-    }
-    else {
+        product = accumulate(next(it_min), it_max, 1LL, multiplies<long long>());
+    } else {
         product = 0;
     }
 
     cout << "Product of elements between min and max: " << product << endl;
 
-
     sort(v.begin(), v.end());
-
     cout << "\nArray sorted in ascending order:\n";
     for (int x : v) cout << x << " ";
     cout << "\n";
